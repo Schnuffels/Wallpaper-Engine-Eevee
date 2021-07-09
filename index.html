@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伊布呀伊布</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="stage" style="display: none;">
+        <ul class="stage_box_division">
+            <li style="float: left;">
+                <div class="stage_box">
+                    <div class="stage_lights1"></div>
+                    <div class="stage_lights2 left"></div>
+                    <div class="stage_lights3 left" style="display: none;"></div>
+                </div>
+                <div class="stage_box">
+                    <div class="stage_lights1"></div>
+                    <div class="stage_lights2 left"></div>
+                    <div class="stage_lights3 left" style="display: none;"></div>
+                </div>
+                <div class="stage_box">
+                    <div class="stage_lights1"></div>
+                    <div class="stage_lights2 left"></div>
+                    <div class="stage_lights3 left" style="display: none;"></div>
+                </div>
+            </li>
+            <li style="float: right;">
+                <div class="stage_box">
+                    <div class="stage_lights1"></div>
+                    <div class="stage_lights2 right"></div>
+                    <div class="stage_lights3 right" style="display: none;"></div>
+                </div>
+                <div class="stage_box">
+                    <div class="stage_lights1"></div>
+                    <div class="stage_lights2 right"></div>
+                    <div class="stage_lights3 right" style="display: none;"></div>
+                </div>
+                <div class="stage_box">
+                    <div class="stage_lights1"></div>
+                    <div class="stage_lights2 right"></div>
+                    <div class="stage_lights3 right" style="display: none;"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="toast"></div>
+    <div id="extend_panel">
+        <div class="extend_panel_title">
+            请确认图片数量是否准确，以及关联音频是否存在：
+            <button class="extend_close">确认</button>
+        </div>
+        <div class="extend_panel_list">
+            <ul class="extend_bg"></ul>
+            <ul class="extend_mp3"></ul>
+        </div>
+    </div>
+    <audio id="player"></audio>
+    <img id="dance" src="img/eevee.gif"></img>
+    <img id="dance2" src="img/eevee2.gif" style="opacity: 0.01;"></img>
+    <div id="dance_scene"  style="opacity: 0;"></div>
+    <canvas id="canvas_clock" width="300" height="300"></canvas>
+    <canvas id="canvas_float"></canvas>
+    <div class="btn_box">
+        <button class="btn_scene">场景</button>
+        <button class="btn_line">线条</button>
+    </div>
+    <script type="text/javascript" src="js/media.js"></script>
+    <script type="text/javascript" src="js/float.js"></script>
+    <script type="text/javascript" src="js/clock.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>

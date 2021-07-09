@@ -1,0 +1,400 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+ul{
+    list-style: none;
+}
+
+body{
+    background: #f2dac0;
+}
+
+canvas {
+    display: block;
+    position: fixed;
+}
+
+#toast {
+    display: none;
+    width: 500px;
+    padding: 10px;
+    background-color: rgb(4 4 4 / 53%);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    margin: 20px auto;
+}
+
+#extend_panel {
+    display: none;
+    width: 500px;
+    height: 250px;
+    background: #4c4c4c;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 11;
+    margin: -150px 0 0 -260px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.extend_panel_title{
+    margin-bottom: 10px;
+}
+
+.extend_close{
+    padding: 0 10px;
+    background: #fff;
+    border: 0;
+    border-radius: 4px;
+}
+
+.extend_panel_list{
+    display: flex;
+}
+
+#extend_panel ul{
+    width: 50%;
+}
+
+#extend_panel ul li{
+    height: 25px;
+    line-height: 25px;
+}
+
+#canvas_float{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9;
+}
+
+#canvas_clock{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 8;
+}
+
+#dance, #dance2 {
+    display: block;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -270px 0 0 -233px;
+    
+}
+
+#dance_scene{
+    position: fixed;
+    overflow: hidden;
+    z-index: -10;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+#dance_scene img{
+    width: 100%;
+    height: 100%;
+}
+
+.btn_box {
+    padding: 10px;
+    border: 5px solid #d0ac84;
+    border-radius: 10px;
+    position: fixed;
+    bottom: 100px;
+    right: 60px;
+    z-index: 10;
+    transform: skew(-10deg, 6deg);
+}
+
+.btn_box button {
+    border: 0;
+    border-radius: 5px;
+    background: #eccdaa;
+    color: #f2dac0;
+    padding: 20px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 1s;
+}
+
+.btn_box button.active{
+    background-color: #d8ad7d;
+}
+
+.btn_scene:hover, .btn_scene.active:hover{
+    background-color: #92da8d;
+}
+
+.btn_line:hover, .btn_line.active:hover{
+    background-color: #efb8b8;
+}
+
+.btn_line_click{
+    animation-name: color_change_line;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-duration: 2s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+.btn_scene_click{
+    animation-name: color_change_scene;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-duration: 2s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+@keyframes color_change_line {
+    0% {
+        background-color: #eccdaa;
+    }
+    50% {
+        background-color: #efb8b8;
+    }
+    100% {
+        background-color: #d8ad7d;
+    }
+}
+
+@keyframes color_change_scene {
+    0% {
+        background-color: #eccdaa;
+    }
+    50% {
+        background-color: #92da8d;
+    }
+    100% {
+        background-color: #d8ad7d;
+    }
+}
+
+.btn_line_leave{
+    animation-name: color_change_line;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-duration: 2s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+.btn_scene_leave{
+    animation-name: color_change_scene;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-duration: 2s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+@keyframes leave_line {
+    0% {
+        background-color: #d8ad7d;
+    }
+    50% {
+        background-color: #efb8b8;
+    }
+    100% {
+        background-color: #eccdaa;
+    }
+}
+
+@keyframes leave_scene {
+    0% {
+        background-color: #d8ad7d;
+    }
+    50% {
+        background-color: #92da8d;
+    }
+    100% {
+        background-color: #eccdaa;
+    }
+}
+
+.fadeIn{
+    animation-name: fadeIn;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+.fadeOut{
+    animation-name: fadeOut;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity:0;
+    }
+    50%{
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity:1;
+    }
+    100% {
+        opacity:0;
+    }
+}
+
+.imgFadeIn{
+    animation-name: imgFadeIn;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+.imgFadeOut{
+    animation-name: imgFadeOut;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+@keyframes imgFadeIn {
+    0% {
+        opacity:0.01;
+    }
+    100% {
+        opacity:1;
+    }
+}
+
+@keyframes imgFadeOut {
+    0% {
+        opacity:1;
+    }
+    100% {
+        opacity:0.01;
+    }
+}
+
+.stage {
+    display: none;
+    width: 1200px;
+    height: 800px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -400px 0 0 -600px;
+    z-index: 10;
+}
+
+.stage_box {
+    float: left;
+    width: 120px;
+    height: 140px;
+    position: relative;
+    margin-right: 40px;
+}
+
+.stage_box:last-child{
+    margin-right: 0;
+}
+
+.stage_lights1 {
+    width: 115px;
+    height: 74px;
+    background: url(../img/stage_lights1.png) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.stage_lights2 {
+    width: 100px;
+    height: 119px;
+    background: url(../img/stage_lights2.png) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 20px;
+    left: 12px;
+}
+
+.stage_lights3 {
+    display: none;
+    width: 380px;
+    height: 455px;
+    background: url(../img/stage_lights3.png) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 23px;
+    left: -12px;
+}
+
+.stage_lights2.left{
+    transform:scaleX(-1);
+}
+
+.stage_lights2.right{
+    left: 0;
+}
+
+
+.stage_lights3.left{
+    transform:scaleX(-1);
+}
+
+.stage_lights3.right {
+    left: -16pc;
+}
+
+.start-roll {
+    animation: qxy-rotaing-anim 40s infinite linear;
+    transform-origin: center center;
+}
+
+.pause-roll {
+    animation-play-state: paused;
+    animation-play-state: paused;
+}
+
+@keyframes rotaing-anim {
+    0%{
+        transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+    }
+}
