@@ -26,9 +26,9 @@ function Clock(){
 
     // 绘制表盘外圈
     ctx_clock.beginPath();    //开始一条新的路径
-    ctx_clock.arc(0,0,100,0,360 * (Math.PI / 180, true))  //绘制外表盘
+    ctx_clock.arc(0,0,100,0,360 * (Math.PI / 180, true));  //绘制外表盘
     ctx_clock.moveTo(0,0);                                //笔触位置移动回中心，再开始新的绘制
-    ctx_clock.arc(0,0,5,0,360 * (Math.PI / 180, true))    //绘制中心点
+    ctx_clock.arc(0,0,5,0,360 * (Math.PI / 180, true));    //绘制中心点
     ctx_clock.lineWidth = 7;                              //线框
     ctx_clock.strokeStyle = '#c28648';    //颜色
     ctx_clock.stroke();   //描边

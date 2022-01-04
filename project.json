@@ -1,0 +1,161 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "这是一款强大的幻灯片场景音频壁纸，以跳舞的伊布为主题，可随时具象化与场景一同出现融入场景。支持将壁纸与背景音乐成双绑定，在启用壁纸的同时播放相应的背景音乐。\n壁纸场景：本壁纸内置了两个场景，支持设置自定义的外部场景（壁纸库）与外部音频（音频库，请注意将音频文件后缀改为 png）\n舞台灯光：在音乐播放到 1/2 与 2/3 处时会触发舞台灯光提醒，触发舞台灯光的前提条件是启用跳舞的伊布",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"dance_eevee" : 
+			{
+				"index" : 1,
+				"order" : 101,
+				"text" : "跳舞的伊布",
+				"type" : "bool",
+				"value" : true
+			},
+			"float_element_img" : 
+			{
+				"condition" : "float_switch.value==true",
+				"index" : 13,
+				"order" : 113,
+				"text" : "浮动图标",
+				"type" : "file",
+				"value" : ""
+			},
+			"float_fps" : 
+			{
+				"condition" : "float_switch.value==true",
+				"index" : 12,
+				"order" : 112,
+				"text" : "浮动（FPS）",
+				"type" : "textinput",
+				"value" : "60"
+			},
+			"float_img_height" : 
+			{
+				"condition" : "float_switch.value==true",
+				"index" : 10,
+				"order" : 110,
+				"text" : "浮动（图标实际高度）",
+				"type" : "textinput",
+				"value" : "800"
+			},
+			"float_img_width" : 
+			{
+				"condition" : "float_switch.value==true",
+				"index" : 9,
+				"order" : 109,
+				"text" : "浮动（图标实际宽度）",
+				"type" : "textinput",
+				"value" : "800"
+			},
+			"float_num" : 
+			{
+				"condition" : "float_switch.value == true",
+				"index" : 7,
+				"order" : 107,
+				"text" : "浮动（数量）",
+				"type" : "textinput",
+				"value" : "15"
+			},
+			"float_size" : 
+			{
+				"condition" : "float_switch.value==true",
+				"index" : 8,
+				"order" : 108,
+				"text" : "浮动（大小）",
+				"type" : "textinput",
+				"value" : "70"
+			},
+			"float_speed" : 
+			{
+				"condition" : "float_switch.value==true",
+				"fraction" : true,
+				"index" : 11,
+				"max" : 100,
+				"min" : 1,
+				"order" : 111,
+				"precision" : 1,
+				"step" : 1,
+				"text" : "浮动（速度）",
+				"type" : "slider",
+				"value" : 10
+			},
+			"float_switch" : 
+			{
+				"index" : 6,
+				"order" : 106,
+				"text" : "启用浮动元素",
+				"type" : "bool",
+				"value" : true
+			},
+			"media_extend_bg" : 
+			{
+				"condition" : "scene_auto.value==true",
+				"index" : 4,
+				"mode" : "fetchall",
+				"order" : 104,
+				"text" : "自定义场景库 (.jpg .jpeg .gif)",
+				"type" : "directory",
+				"value" : ""
+			},
+			"media_extend_mp3" : 
+			{
+				"condition" : "scene_auto.value==true",
+				"fileType" : "image",
+				"index" : 5,
+				"mode" : "fetchall",
+				"order" : 105,
+				"text" : "自定义音频库 (.png 可将mp3修改为png)",
+				"type" : "directory",
+				"value" : ""
+			},
+			"media_intermission_time" : 
+			{
+				"condition" : "scene_auto.value == true",
+				"index" : 3,
+				"order" : 103,
+				"text" : "间歇场景时间",
+				"type" : "textinput",
+				"value" : "20"
+			},
+			"media_volume" : 
+			{
+				"fraction" : true,
+				"index" : 0,
+				"max" : 100,
+				"min" : 0,
+				"order" : 100,
+				"precision" : 1,
+				"step" : 1,
+				"text" : "音量",
+				"type" : "slider",
+				"value" : 50
+			},
+			"scene_auto" : 
+			{
+				"index" : 2,
+				"order" : 102,
+				"text" : "自动触发场景",
+				"type" : "bool",
+				"value" : true
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0.7568627450980392 0.5176470588235295 0.2784313725490196"
+			}
+		}
+	},
+	"preview" : "preview.jpg",
+	"tags" : [ "Cartoon" ],
+	"title" : "伊布呀伊布 - eevee（幻灯片场景音频壁纸）",
+	"type" : "web",
+	"version" : 8,
+	"visibility" : "public",
+	"workshopid" : "2541334297",
+	"workshopurl" : "steam://url/CommunityFilePage/2541334297"
+}

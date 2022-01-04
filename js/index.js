@@ -1,3 +1,6 @@
+/**
+ * 压缩分割 1
+ */
 var currentScene = 'line';
 var btnClickLock = false;
 var eeveeSwitchLock = false;
@@ -11,216 +14,20 @@ var stageDom = document.getElementsByClassName('stage')[0];
 var stageLights3ArrDom = document.getElementsByClassName('stage_lights3');
 
 // 外部扩展库扫描
-var extend_init = false;
+var extend_bg_init = false;
+var extend_mp3_init = false;
 var extend_panel = document.getElementById('extend_panel');
 var extend_close = document.getElementsByClassName('extend_close')[0];
 var extend_bg_box = document.getElementsByClassName('extend_bg')[0];
 var extend_mp3_box = document.getElementsByClassName('extend_mp3')[0];
 var extend_bg = [];
-var extend_play_list = [];
+var extend_mp3 = [];
+var extend_bg_play_list = [];
+var extend_mp3_play_list = [];
 
-
-//监听是否启动浮动元素
-window.wallpaperPropertyListener = {
-    userDirectoryFilesAddedOrChanged: function(propertyName, changedFiles) {
-        if(propertyName == 'media_extend_bg'){
-            // 扫描
-            extend_bg = changedFiles;
-
-
-            // 初始化
-            if(extend_init){
-                return;
-            }
-
-            // 弹框提示
-            if(localStorage.getItem('cue') != '1'){
-                extend_panel.style.display = 'block';
-                extend_bg_box.innerHTML = '';
-                extend_mp3_box.innerHTML = '';
-            }
-
-            for(let i = 0; i < extend_bg.length; i++){
-                //处理 壁纸 列表
-                let extend_bg_box_li = document.createElement('li')
-                extend_bg_box_li.innerText = extractFilenameInPath(extend_bg[i], 'upper_path_complete');
-                extend_bg_box.appendChild(extend_bg_box_li);
-
-                let ext = extractFilenameInPath(extend_bg[i], 'ext');
-                let extend_mp3_box_li = document.createElement('li')
-                extend_mp3_box_li.innerText = ext == 'jpg' ? '壁纸' : (ext == 'png' ? '音频' : '未知');
-                extend_mp3_box.appendChild(extend_mp3_box_li);
-
-                // 只提取壁纸
-                if(ext == 'jpg'){
-                    extend_play_list.push(extend_bg[i]);
-                }
-            }
-
-            extend_init = true;
-        }
-    },
-    userDirectoryFilesRemoved: function(propertyName, removedFiles) {
-        localStorage.setItem('cue', 0);
-    },
-    applyUserProperties: function(properties) {
-        // 背景图像扩展
-        if (properties.media_extend_bg) {
-            if (properties.media_extend_bg.value == null || properties.media_extend_bg.value == ''){
-                // 默认场景壁纸与音效加载
-                defaultWallpaper();
-            } else {
-                let extend_bg_src = 'file:///' + properties.media_extend_bg.value;
-                setTimeout(() => {
-                    for(let i = 0; i < extend_play_list.length; i++){
-                        let filename = extractFilenameInPath(extend_play_list[i], 'name')
-                        scene.add(extend_bg_src + '/' + filename + '.jpg', extend_bg_src + '/' + filename + '.png');
-                    }
-                }, 1000);
-                localStorage.setItem('cue', 0);
-            }
-        }
-        // 自动触发场景
-        if (properties.scene_auto) {
-            userMediaParam.autoScene = properties.scene_auto.value;
-            if(userMediaParam.autoScene){
-                // 执行场景定时器
-                startSceneTimer = startSceneFun();
-                toastMsg('已启用自动场景');
-            } else {
-                clearInterval(startSceneTimer);
-                toastMsg('已关闭自动场景');
-            }
-        }
-        // 跳舞的伊布
-        if (properties.dance_eevee) {
-            userMediaParam.dance_eevee = properties.dance_eevee.value;
-            if(userMediaParam.dance_eevee){
-                if(eeveeSwitchLock) {
-                    toastMsg('操作失败，按键处于冷却状态');
-                    return;
-                }
-                eeveeSwitchLock = true;    //锁定按钮
-                setTimeout(() => { eeveeSwitchLock = false; }, 3000);  //3秒后解锁
-                currentScene == 'scene' ? openDancer('scene') : openDancer('line');
-                toastMsg('已开启跳舞的伊布');
-            } else {
-                closeDancer();
-                toastMsg('已关闭跳舞的伊布');
-            }
-        }
-        // 音量调节
-        if (properties.media_volume) {
-            audio.volume = properties.media_volume.value / 100;
-        }
-        // 间歇时间
-        if (properties.media_intermission_time) {
-            userMediaParam.startSceneCountDown = properties.media_intermission_time.value;
-            toastMsg('已设置场景间歇时间：' + userMediaParam.startSceneCountDown, 2000);
-            if(userMediaParam.startSceneCountDown < 5){
-                userMediaParam.startSceneCountDown = 5;
-                toastMsg('间歇时间不得小于5');
-            }
-        }
-        // 启用浮动元素
-        if (properties.float_switch) {
-            //绘制浮动元素
-            if(properties.float_switch.value){
-                toastMsg('已启用浮动元素');
-                setTimeout(() => {
-                    // 结束上一次的监听，阻止继续回调
-                    float_anim_stop = false;
-
-                    //生成浮动元素
-                    var float_num = user_param.float_num > 100 ? 100 : user_param.float_num;
-                    for(let i = 0; i < float_num; i++){
-                        var p1 = new Ball(user_param.float_size, user_param.speed);
-                    }
-
-                    //启动动画
-                    startAnimating(user_param.fps, function(){
-                        ctx.clearRect(0, 0, canvas_float.width, canvas_float.height);
-                        for(let j = 0; j < ballArr.length; j++){
-                            ballArr[j].update();
-                            ballArr[j].render(user_param.float_width, user_param.float_height);
-                        }
-                    });
-
-                    // 初始化完成
-                    floatInit = true;
-                }, 1000);
-            } else{
-                toastMsg('已关闭浮动元素');
-                // 1.清除屏幕
-                ctx.clearRect(0, 0, canvas_float.width, canvas_float.height);
-                // 2.清空对象
-                ballArr = [];
-                // 3.结束自我回调
-                float_anim_stop = true;
-            }
-        }
-
-        // Text
-        if (properties.float_num) {
-            user_param.float_num = properties.float_num.value;
-            toastMsg('浮动元素个数：' + user_param.float_num + '，重新开启生效', 2000);
-        }
-
-        if (properties.float_size) {
-            user_param.float_size = properties.float_size.value;
-            toastMsg('浮动元素大小：' + user_param.float_size + '，重新开启生效', 2000);
-        }
-
-        if (properties.float_img_width) {
-            user_param.float_width = properties.float_img_width.value;
-        }
-
-        if (properties.float_img_height) {
-            user_param.float_height = properties.float_img_height.value;
-        }
-
-        if (properties.float_speed) {
-            user_param.speed = properties.float_speed.value;
-            toastMsg('浮动元素速度：' + user_param.speed + '，重新开启生效', 2000);
-        }
-
-        if (properties.float_fps) {
-            user_param.fps = properties.float_fps.value;
-            toastMsg('浮动元素帧数：' + user_param.fps + '，重新开启生效', 2000);
-        }
-
-        if (properties.float_element_img) {
-            if (properties.float_element_img.value != null && properties.float_element_img.value != ''){
-                user_param.float_img = 'file:///' + properties.float_element_img.value;
-            }
-        }
-
-        if(!wallpaperEeventListenerInit){
-            if (properties.media_extend_bg) {
-                if (properties.media_extend_bg.value == null || properties.media_extend_bg.value == ''){
-                    toastMsg('壁纸准备中，本次使用内部壁纸', 3000);
-                } else {
-                    toastMsg('壁纸准备中，本次使用自定义壁纸', 3000);
-                }
-            }
-            wallpaperEeventListenerInit = true;
-        }
-    },
-};
-
-// 长时间未完成壁纸库初始化
-setTimeout(() => {
-    if(!wallpaperEeventListenerInit){
-        // 默认场景壁纸与音效加载
-        defaultWallpaper();
-        // 执行场景定时器
-        startSceneTimer = startSceneFun();
-        toastMsg('长时间未完成初始化，已切换回内部壁纸库', 3000);
-    }
-}, 10000);
-
-// 显示按钮
-defaultShowBtn();
+/**
+ * 压缩分割 2
+ */
 
 // 关闭扩展库确认窗口
 extend_close.addEventListener('click', function(){
@@ -256,6 +63,24 @@ btn_line.addEventListener('click', function(){
         toastMsg('操作失败，按键处于冷却状态');
     }
 });
+
+/**
+ * 压缩分割 3
+ */
+
+// 长时间未完成壁纸库初始化
+setTimeout(() => {
+    if(!wallpaperEeventListenerInit){
+        // 默认场景壁纸与音效加载
+        defaultWallpaper();
+        // 执行场景定时器
+        startSceneTimer = startSceneFun();
+        toastMsg('长时间未完成初始化，已切换回内部壁纸库', 3000);
+    }
+}, 10000);
+
+// 显示按钮
+defaultShowBtn();
 
 // 默认显示按钮
 function defaultShowBtn(){
@@ -372,7 +197,7 @@ function extractFilenameInPath(src, type){
             return upper_path;
             break;
         case 'upper_path_complete':
-            return upper_path + '/' + name + '.' + ext;
+            return upper_path + ' / ' + name + '.' + ext;
             break;
         case 'complete':
             return name + '.' + ext;
@@ -390,9 +215,8 @@ function extractFilenameInPath(src, type){
 // 默认壁纸库
 function defaultWallpaper(index = null, data = null){
     let wallpaper_data = [
-        {'img' : 'img/bg1.jpg', 'audio' : 'mp3/bg_sound_1.mp3'},
-        {'img' : 'img/bg2.jpg', 'audio' : 'mp3/bg_sound_2.mp3'},
-        {'img' : 'img/bg3.jpg', 'audio' : 'mp3/bg_sound_3.mp3'},
+        {'img' : 'img/bg1.jpg', 'audio' : 'mp3/bg1.mp3'},
+        {'img' : 'img/bg2.jpg', 'audio' : 'mp3/bg2.mp3'},
     ];
 
     if(index != null && data != null && index != '' && data != ''){
@@ -405,6 +229,10 @@ function defaultWallpaper(index = null, data = null){
         scene.add(wallpaper_data[i].img, wallpaper_data[i].audio);
     }
 }
+
+/**
+ * 压缩分割 4
+ */
 
 // 舞台特效
 var stageTimer;
@@ -438,3 +266,256 @@ function stageEffects(){
         }
     }, 100);
 }
+
+/**
+ * 压缩分割 5
+ */
+
+//监听是否启动浮动元素
+window.wallpaperPropertyListener = {
+    userDirectoryFilesAddedOrChanged: function(propertyName, changedFiles) {
+
+        if(propertyName == 'media_extend_bg'){
+            // 扫描
+            extend_bg = changedFiles;
+
+
+            // 初始化
+            if(extend_bg_init){
+                return;
+            }
+
+            // 弹框提示
+            if(localStorage.getItem('cue') != '1'){
+                extend_panel.style.display = 'block';
+                extend_bg_box.innerHTML = '';
+            }
+
+            for(let i = 0; i < extend_bg.length; i++){
+                //处理 壁纸 列表
+                let bg_li = document.createElement('li')
+                bg_li.innerText = extractFilenameInPath(extend_bg[i], 'upper_path_complete');
+
+                //格式限制
+                let ext = extractFilenameInPath(extend_bg[i], 'ext');
+                if(ext == 'jpeg' || ext == 'jpg' || ext == 'gif'){
+                    extend_bg_box.appendChild(bg_li);
+                    // 只提取壁纸
+                    extend_bg_play_list.push(extend_bg[i]);
+                }
+            }
+
+            extend_bg_init = true;
+        }
+    
+        if(propertyName == 'media_extend_mp3'){
+            
+            // 扫描
+            extend_mp3 = changedFiles;
+
+            // 初始化
+            if(extend_mp3_init){
+                return;
+            }
+
+            // 弹框提示
+            if(localStorage.getItem('cue') != '1'){
+                extend_panel.style.display = 'block';
+                extend_mp3_box.innerHTML = '';
+            }
+
+            for(let i = 0; i < extend_mp3.length; i++){
+                //处理 壁纸 列表
+                let mp3_li = document.createElement('li')
+                mp3_li.innerText = extractFilenameInPath(extend_mp3[i], 'upper_path_complete') + '→ MP3';
+
+                //格式限制
+                let ext = extractFilenameInPath(extend_mp3[i], 'ext');
+                if(ext == 'png'){
+                    extend_mp3_box.appendChild(mp3_li);
+                    // 只提取音频
+                    extend_mp3_play_list.push(extend_mp3[i]);
+                }
+            }
+
+            extend_mp3_init = true;
+        }
+    },
+    userDirectoryFilesRemoved: function(propertyName, removedFiles) {
+        localStorage.setItem('cue', 0);
+    },
+    applyUserProperties: function(properties) {
+        //主题颜色
+        if(properties.schemecolor){
+            let themeColor = properties.schemecolor.value.split(' ');
+            themeColor = themeColor.map(function(c) {
+                return Math.ceil(c * 255);
+            });
+            let themeColorAsCSS = 'rgb(' + themeColor + ')';
+
+            //删除旧样式
+            let oldStyle = document.getElementsByTagName('style')[0];
+            oldStyle.remove();
+            //追加样式
+            let head = document.getElementsByTagName('head')[0];
+            let styleNode = document.createElement('style');
+            styleNode.innerHTML = `
+                .btn_box { border: 5px solid ${themeColorAsCSS}; }
+                .btn_box button.active { background-color: ${themeColorAsCSS}; }
+            `;
+            head.appendChild(styleNode);
+        }
+
+        // 背景图像扩展
+        if (properties.media_extend_bg) {
+            if (properties.media_extend_bg.value == null || properties.media_extend_bg.value == ''){
+                // 默认场景壁纸与音效加载
+                defaultWallpaper();
+            } else {
+                let extend_bg_src = 'file:\/\/\/' + properties.media_extend_bg.value;
+                let extend_bg_mp3 = 'file:\/\/\/' + properties.media_extend_mp3.value;
+                setTimeout(() => {
+                    for(let i = 0; i < extend_bg_play_list.length; i++){
+                        let bg_name = extractFilenameInPath(extend_bg_play_list[i], 'name');
+                        let bg_ext = extractFilenameInPath(extend_bg_play_list[i], 'ext');
+                        //执行音频
+                        let mp3_name = '';
+                        let mp3_ext = '';
+                        if(i < extend_mp3_play_list.length){
+                            mp3_name = extractFilenameInPath(extend_mp3_play_list[i], 'name');
+                            mp3_ext = extractFilenameInPath(extend_mp3_play_list[i], 'ext');
+                        }
+                        scene.add(extend_bg_src + '/' + bg_name + '.' + bg_ext, extend_bg_mp3 + '/' + mp3_name + '.' + mp3_ext);
+                    }
+                }, 1000);
+                localStorage.setItem('cue', 0);
+            }
+        }
+        // 自动触发场景
+        if (properties.scene_auto) {
+            userMediaParam.autoScene = properties.scene_auto.value;
+            if(userMediaParam.autoScene){
+                // 执行场景定时器
+                startSceneTimer = startSceneFun();
+                toastMsg('已启用自动场景');
+            } else {
+                clearInterval(startSceneTimer);
+                toastMsg('已关闭自动场景');
+            }
+        }
+
+        // 跳舞的伊布
+        if (properties.dance_eevee) {
+            userMediaParam.dance_eevee = properties.dance_eevee.value;
+            if(userMediaParam.dance_eevee){
+                if(eeveeSwitchLock) {
+                    toastMsg('操作失败，按键处于冷却状态');
+                    return;
+                }
+                eeveeSwitchLock = true;    //锁定按钮
+                setTimeout(() => { eeveeSwitchLock = false; }, 3000);  //3秒后解锁
+                currentScene == 'scene' ? openDancer('scene') : openDancer('line');
+                toastMsg('已开启跳舞的伊布');
+            } else {
+                closeDancer();
+                toastMsg('已关闭跳舞的伊布');
+            }
+        }
+        // 音量调节
+        if (properties.media_volume) {
+            audio.volume = properties.media_volume.value / 100;
+        }
+        // 间歇时间
+        if (properties.media_intermission_time) {
+            userMediaParam.startSceneCountDown = properties.media_intermission_time.value;
+            toastMsg('已设置场景间歇时间：' + userMediaParam.startSceneCountDown, 2000);
+            if(userMediaParam.startSceneCountDown < 5){
+                userMediaParam.startSceneCountDown = 5;
+                toastMsg('间歇时间不得小于5');
+            }
+        }
+        // 启用浮动元素
+        if (properties.float_switch) {
+            //绘制浮动元素
+            if(properties.float_switch.value){
+                toastMsg('已启用浮动元素');
+                setTimeout(() => {
+                    // 结束上一次的监听，阻止继续回调
+                    float_anim_stop = false;
+
+                    //生成浮动元素
+                    var float_num = user_param.float_num > 100 ? 100 : user_param.float_num;
+                    for(let i = 0; i < float_num; i++){
+                        var p1 = new Ball(user_param.float_size, user_param.speed);
+                    }
+
+                    //启动动画
+                    startAnimating(user_param.fps, function(){
+                        ctx.clearRect(0, 0, canvas_float.width, canvas_float.height);
+                        for(let j = 0; j < ballArr.length; j++){
+                            ballArr[j].update();
+                            ballArr[j].render(user_param.float_width, user_param.float_height);
+                        }
+                    });
+
+                    // 初始化完成
+                    floatInit = true;
+                }, 1000);
+            } else{
+                toastMsg('已关闭浮动元素');
+                // 1.清除屏幕
+                ctx.clearRect(0, 0, canvas_float.width, canvas_float.height);
+                // 2.清空对象
+                ballArr = [];
+                // 3.结束自我回调
+                float_anim_stop = true;
+            }
+        }
+
+        // Text
+        if (properties.float_num) {
+            user_param.float_num = properties.float_num.value;
+            toastMsg('浮动元素个数：' + user_param.float_num + '，重新开启生效', 2000);
+        }
+
+        if (properties.float_size) {
+            user_param.float_size = properties.float_size.value;
+            toastMsg('浮动元素大小：' + user_param.float_size + '，重新开启生效', 2000);
+        }
+
+        if (properties.float_img_width) {
+            user_param.float_width = properties.float_img_width.value;
+        }
+
+        if (properties.float_img_height) {
+            user_param.float_height = properties.float_img_height.value;
+        }
+
+        if (properties.float_speed) {
+            user_param.speed = properties.float_speed.value;
+            toastMsg('浮动元素速度：' + user_param.speed + '，重新开启生效', 2000);
+        }
+
+        if (properties.float_fps) {
+            user_param.fps = properties.float_fps.value;
+            toastMsg('浮动元素帧数：' + user_param.fps + '，重新开启生效', 2000);
+        }
+
+        if (properties.float_element_img) {
+            if (properties.float_element_img.value != null && properties.float_element_img.value != ''){
+                user_param.float_img = 'file:\/\/\/' + properties.float_element_img.value;
+            }
+        }
+
+        if(!wallpaperEeventListenerInit){
+            if (properties.media_extend_bg) {
+                if (properties.media_extend_bg.value == null || properties.media_extend_bg.value == ''){
+                    toastMsg('壁纸准备中，本次使用内部壁纸', 3000);
+                } else {
+                    toastMsg('壁纸准备中，本次使用自定义壁纸', 3000);
+                }
+            }
+            wallpaperEeventListenerInit = true;
+        }
+    },
+};

@@ -30,8 +30,8 @@ canvas {
 
 #extend_panel {
     display: none;
-    width: 500px;
-    height: 250px;
+    width: 700px;
+    height: 300px;
     background: #4c4c4c;
     color: #fff;
     font-size: 14px;
@@ -40,7 +40,7 @@ canvas {
     top: 50%;
     left: 50%;
     z-index: 11;
-    margin: -150px 0 0 -260px;
+    margin: -155px 0 0 -360px;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -67,6 +67,9 @@ canvas {
 #extend_panel ul li{
     height: 25px;
     line-height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #canvas_float{

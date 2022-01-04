@@ -93,10 +93,10 @@ Ball.prototype.update = function(){
     if(this.y < 0 || this.y > canvas_float.height){
         this.dy = -this.dy;
     }
-}
+};
 
 // 绘制浮动元素
 Ball.prototype.render = function(float_width, float_height){
     ctx.beginPath();
     ctx.drawImage(float_element, 0, 0, float_width, float_height, this.x, this.y, this.r, this.r);
-}
+};

@@ -20,23 +20,23 @@ function Music(){
 Music.prototype.setMusic = function(src){
     audio.setAttribute('src', src);
     return this;
-}
+};
 
 Music.prototype.play = function(){
     audio.play();
-}
+};
 
 Music.prototype.pause = function(){
     audio.pause();
-}
+};
 
 Music.prototype.getCurrentTime = function(){
     return audio.currentTime;
-}
+};
 
 Music.prototype.getDuration = function(){
     return audio.duration;
-}
+};
 
 // 场景播放器
 var danceCcene = document.getElementById('dance_scene');
@@ -51,11 +51,11 @@ Scene.prototype.add = function(src, mp3){
         img : src,
         mp3 : mp3
     });
-}
+};
 
 Scene.prototype.clear = function(){
     sceneList = [];
-}
+};
 
 Scene.prototype.render = function(){
     danceCcene.style = 'background: url(' + sceneList[scenePlayOrder].img + ') no-repeat center center; background-size: cover; opacity: 0;';
@@ -68,7 +68,7 @@ Scene.prototype.render = function(){
             scenePlayOrder = 0;
         }
     }
-}
+};
 
 
 var activationStage = false;
